@@ -4,9 +4,9 @@ This is the only per-project workflow settings file. The installer fills the
 project name and absolute workflow root. Keep the state outside your code repository.
 
 ```
-Projekat: <projekat>
+Project: <project>
 Workflow root: <workflow-root>
-State: <workflow-root>/projects/<projekat>/
+State: <workflow-root>/projects/<project>/
 ```
 
 Runtime references (relative to the workflow root above):
@@ -38,5 +38,6 @@ Never assume that all agents or operating systems have the same permissions.
 
 Task state includes `TASKS.md`, `decisions.md`, optional `research/`, and
 `tasks/<id>-<name>/`. Each task has `task.md`, `claude-pass.md`, `gpt-pass.md`,
-`luka.md` and `outcome.md`. The name `luka.md` identifies the human-only input
-file in this personal workflow; it is retained to match the prompts.
+`human-input.md` and `outcome.md`. The file `human-input.md` is reserved for human
+input. Agents quote replies under `Relayed human input` in `task.md` instead of
+writing in that file.

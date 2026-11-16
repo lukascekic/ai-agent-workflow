@@ -1,4 +1,4 @@
-# Odluke — <projekat>
+# Decisions — <project>
 
 Project decisions only. Use the format in the repository's
 `.workflow/bootstrap.md`, section "Recording".

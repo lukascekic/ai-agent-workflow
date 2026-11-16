@@ -1,3 +1,3 @@
-# Claude — <id>
+# Claude: <id>
 
-Sealed pass, framing diff (ako je Claude lead), argumentacija i review krugovi.
+Sealed pass, framing diff (if Claude is the lead), arguments and review rounds.

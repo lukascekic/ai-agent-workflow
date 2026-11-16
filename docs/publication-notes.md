@@ -10,7 +10,9 @@ Prepared from the personal workflow template and version 0.4.0 specification.
   deployment section, old release history and historical-version dependencies.
 - Configuration uses a generated workflow root instead of personal machine paths.
 - A Python installer replaces the personal Bash installer for this snapshot.
-- Serbian template fields and `luka.md` are retained to match existing prompts.
+- Template fields, statuses, human decision commands and language instructions
+  are translated into English. The human-only file is named `human-input.md`;
+  the personal source uses a different filename. All public references are updated.
 - Permission guidance is environment-specific; a limitation observed on one
   machine is not stated as a universal restriction of an agent.
 - The experiment page summarizes questions, protocols and limitations. Private
@@ -31,3 +33,7 @@ are historical labels, not instructions to fetch private files.
 For stronger evidence later, add a sanitized real task only after reviewing all
 of its inputs and artifacts for publication. The worked example included now
 illustrates the process but does not demonstrate its measured effectiveness.
+
+The English field names and statuses are not a drop-in replacement for existing
+Serbian task state. Keep using its original matching prompts, or explicitly
+translate and review the state before adopting this public copy.

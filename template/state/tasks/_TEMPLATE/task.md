@@ -1,57 +1,57 @@
-## Za Luku — <datum, vreme>
+## For the human: <date, time>
 
-Stanje:
-Od poslednjeg puta:
-Pitanja (doslovno):
-Odluke:
-Posle tvog odgovora:
-Sledeća kapija: *(tačna komanda i kome ide, npr. `continue 03 → Claude`)*
+State:
+Since the last update:
+Questions (verbatim):
+Decisions:
+After your reply:
+Next gate: *(exact command and recipient, e.g. `continue 03 → Claude`)*
 
-*(Piše samo lead. Kad ništa ne treba: `Nema akcije za Luku`.)*
+*(Only the lead writes this card. When nothing is needed: `No human action needed`.)*
 
 ---
 
-# Task: <id>-<naziv>
+# Task: <id>-<name>
 
-**Tip:** software | research/decision | other
+**Type:** software | research/decision | other
 **Status:** intake | sealed | revealed | building | review | confirm | closed
-**Oznaka:** Fast | Deep — *okidači koji su okinuli + razlog (Deep ako bilo koji pass imenuje važeći okidač, osim ako je Luka odbio eskalaciju u `decisions.md`)*
+**Label:** Fast | Deep: *triggers that fired and why. Deep if either pass names a valid trigger, unless the human declined escalation in `decisions.md`.*
 **Lead:** Claude | GPT · **Reviewer:** GPT | Claude
-**Sealed:** da | ne — <razlog> *(`ne` samo za child task iz odobrenog grafa — D49)*
-**Graf:** *(samo child task: `00-init`)*
-**Otvoren:**
-**Dira:** *(fajlovi, moduli, oblasti — dva aktivna taska koja diraju isto se serijalizuju)*
-**Next step:** *(uvek aktuelno — po njemu drugi model nastavlja ako ovaj udari u limit)*
+**Sealed:** yes | no: <reason> *(`no` only for a child task from an approved graph, D49)*
+**Graph:** *(child tasks only: `00-init`)*
+**Opened:**
+**Touches:** *(files, modules or areas; serialize active tasks whose touched areas overlap)*
+**Next step:** *(keep current so another model can resume if this one hits a limit)*
 
-### Aktivirani elementi
+### Activated elements
 
-*Iz mape okidač → element i događaj → element. Element koji nije ovde nije aktiviran — u `outcome.md` se beleži kao `n/a — uslov nije aktiviran`.*
+*From the trigger-to-element and event-to-element maps. An element absent here is not activated; record it in `outcome.md` as `n/a: condition not activated`.*
 
-| Element | Aktivirao ga | Gotovo |
+| Element | Activated by | Done |
 |---|---|---|
 | | | |
 
-*Falsifier, ako je aktiviran: `isti poziv` (sa challenge-om) ili `zaseban poziv` (okidač novac, bezbednost ili nepovratnost).*
+*Falsifier, if activated: `same call` (with the challenge) or `separate call` (money, security or irreversible-action trigger).*
 
 ---
 
 ## Intake
 
-*Strukturisano ili sirovi braindump — oba modela ga dobijaju neizmenjenog. Nepoznato = `unknown`.*
+*Structured intake or raw braindump, unchanged for both models. Unknown = `unknown`.*
 
 ### Braindump
 
-### Cilj
+### Goal
 
-### Acceptance kriterijumi
+### Acceptance criteria
 
 ### Non-goals
 
-### Ograničenja
+### Constraints
 
-### Noseći ulazi
+### Load-bearing inputs
 
-| Ulaz | Status |
+| Input | Status |
 |---|---|
 | | verified locally · verified externally · user assertion · referenced but unavailable · unknown |
 
@@ -59,46 +59,46 @@ Sledeća kapija: *(tačna komanda i kome ide, npr. `continue 03 → Claude`)*
 
 ## Plan
 
-*Samo kad je deliverable softver ili ima više faza; inače se deliverable pravi direktno.*
+*Required for software or a deliverable with several phases; otherwise produce the deliverable directly.*
 
-*Faze: posle svake faze checkpoint. Ako reviewer ne može da pregleda celinu u jednom pozivu, review ide po fazi (`Opseg: faza N`) — ta faza i njeni ugovori sa već prihvaćenim fazama. Završni review (`Opseg: završni`) pokriva ugovore između svih faza i završni acceptance, i samo on zatvara task.*
+*After each phase, run its checkpoint. If a reviewer cannot cover the whole result in one call, review by phase (`Scope: phase N`), including contracts with accepted phases. The final review (`Scope: final`) covers contracts between all phases and final acceptance. Only it closes the task.*
 
 ---
 
 ## Checkpoints
 
-*Samo kad je aktiviran (okidač slab oracle, ili plan ima granice rizika).*
+*Only when activated: a weak oracle, or risk boundaries in the plan.*
 
 ```
-Granica rizika:
-Šta mora da važi:
-Oracle / provera:
-Uslov za stop ili rollback:
-Ishod:
+Risk boundary:
+What must be true:
+Oracle / check:
+Stop or rollback condition:
+Outcome:
 ```
 
 ---
 
 ## Review
 
-Opseg: završni | faza N *(samo završni review zatvara task; krugovi se broje unutar opsega)*
-Review krug: 1
-Fokus:
-Prepravka materijalna: da | ne
+Scope: final | phase N *(only the final review closes the task; count rounds within the scope)*
+Review round: 1
+Focus:
+Material rewrite: yes | no
 
-*(Od trećeg kruga, ako treba još jedan krug, lead ovde piše izveštaj o konvergenciji i staje za Luku. Lukina odluka se vezuje za krug:)*
+*(From round three onward, if another round is needed, the lead writes a convergence report here and stops for the human. The human decision is tied to the round and scope.)*
 
-Odluka za krug N (opseg): *(nastavi · promeni pristup · stani — prihvata rizik samo za ovaj opseg · stani ceo task — lead doslovno prepisuje Lukin odgovor `krug N: …` iz `luka.md` ili `Relayed human input`, sa izvorom i vremenom)*
+Decision for round N (<scope>): *(continue · change approach · stop and accept risk, for this scope only · stop whole task. Copy the human's `round N: …` reply verbatim from `human-input.md` or `Relayed human input`, with source and time.)*
 
 ---
 
 ## Deferred
 
-*(Samo research/decision. Svaka stavka mora imati revisit trigger.)*
+*Research/decision tasks only. Each entry needs a revisit trigger.*
 
 ```
-Nalaz:
-Zašto sada ne blokira:
+Finding:
+Why it does not block now:
 Revisit trigger:
 ```
 
@@ -106,4 +106,4 @@ Revisit trigger:
 
 ## Relayed human input
 
-*(Lukini odgovori koje je model preneo doslovno, sa vremenom i kanalom. `luka.md` piše samo Luka.)*
+*(Human replies quoted verbatim by the model, with time and channel. Only the human writes `human-input.md`.)*

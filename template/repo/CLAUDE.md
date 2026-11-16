@@ -8,7 +8,7 @@ This project runs under a defined development workflow.
 
 Do not start work until Luka gives a gate from the table in `.workflow/bootstrap.md` (`init`, `sealed 03`, `continue 03`, `apply 03` …) or `DIRECT <description>`. A gate without a task id, other than `init`, is ambiguous — ask. In the sealed stage, never open the other model's pass file.
 
-Never write in any `luka.md`. Talk to Luka in Serbian. Code and comments in English.
+Never write in any `human-input.md`. Use English for conversation and workflow records. Code and comments in English.
 
 <!-- ===== END WORKFLOW BLOCK ===== -->
 

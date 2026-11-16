@@ -17,10 +17,10 @@ This file carries the base flow. For a task whose effective label is **Deep**, a
 
 ## Language and authorship
 
-- Talk to Luka in **Serbian**. Task, pass and decision files in **Serbian**. Code, identifiers and comments in **English**.
-- **`luka.md` contains only Luka's words. You never write in it.** To carry his answer forward, quote it verbatim under `Relayed human input` in `task.md`, with time and channel. During implementation Luka may answer you in the terminal or through Orca mobile instead of `luka.md` — same rule.
+- Use **English** for conversation, task files, pass files, decision records, code, identifiers and comments.
+- **`human-input.md` contains only Luka's words. You never write in it.** To carry his answer forward, quote it verbatim under `Relayed human input` in `task.md`, with time and channel. During implementation Luka may answer you in the terminal or through Orca mobile instead of `human-input.md` — same rule.
 - **Never create a file named `claude.md`** where agents read — Windows and macOS load it as `CLAUDE.md` instructions.
-- **Sync.** `<state>` is synced between machines and Luka's phone. If you see a `*.sync-conflict-*` file in the task folder, **stop and tell Luka**; never pick a version yourself. If the card asks Luka something and you do not see his answer to *that* question — in `luka.md` or relayed — **stop and say so**; never act on an older answer to a similar question.
+- **Sync.** `<state>` is synced between machines and Luka's phone. If you see a `*.sync-conflict-*` file in the task folder, **stop and tell Luka**; never pick a version yourself. If the card asks Luka something and you do not see his answer to *that* question — in `human-input.md` or relayed — **stop and say so**; never act on an older answer to a similar question.
 
 ---
 
@@ -49,15 +49,15 @@ One short command; the number is the task's prefix. Each loads a frozen prompt f
 
 The pointer form is equivalent: *"Read .workflow/prompts/sealed.md and execute it for task 03."* `START SEALED <id>` is still accepted. **A gate without a task id (other than `init`) is ambiguous — ask.** Never pass a gate on your own. If you launch the other model, send it only the one-line pointer.
 
-**A child task whose `task.md` says `Sealed: ne` starts with `continue <id>`** — see `continue.md`, step 0.
+**A child task whose `task.md` says `Sealed: no` starts with `continue <id>`** — see `continue.md`, step 0.
 
-**Every time you stop for Luka, the card's `Sledeća kapija:` names the exact command and model.**
+**Every time you stop for Luka, the card's `Next gate:` names the exact command and model.**
 
 ---
 
 ## Task boundaries
 
-A task is a unit that needs **its own framing and its own independent check**. Related work with the same goal and framing is one task, with phases inside it. A new task is split off only when at least one holds: (1) a **blocking decision** — the rest cannot be framed until Luka decides; (2) a **different risk** — a part carries a trigger the rest does not; (3) **parallel work** whose `Touches:` do not overlap; (4) a **different oracle or user**. **Size alone is not a reason:** a large deliverable stays one task — one sealed pass and framing, a plan with phases, a checkpoint after each phase, and a review per phase when the reviewer cannot cover the whole in one call. The final review (`Opseg: završni`) covers the contracts between phases and the final acceptance, and only it closes the task; rollout and rollback gates stay with the risky action.
+A task is a unit that needs **its own framing and its own independent check**. Related work with the same goal and framing is one task, with phases inside it. A new task is split off only when at least one holds: (1) a **blocking decision** — the rest cannot be framed until Luka decides; (2) a **different risk** — a part carries a trigger the rest does not; (3) **parallel work** whose `Touches:` do not overlap; (4) a **different oracle or user**. **Size alone is not a reason:** a large deliverable stays one task — one sealed pass and framing, a plan with phases, a checkpoint after each phase, and a review per phase when the reviewer cannot cover the whole in one call. The final review (`Scope: final`) covers the contracts between phases and the final acceptance, and only it closes the task; rollout and rollback gates stay with the risky action.
 
 ---
 
@@ -90,7 +90,7 @@ A task is a unit that needs **its own framing and its own independent check**. R
 | material rewrite after review | `confirm` |
 | implementation with a strong test oracle | implementer ≠ adversarial-test author |
 
-**An element not activated is not done.** In `outcome.md` it is `n/a — uslov nije aktiviran`.
+**An element not activated is not done.** In `outcome.md` it is `n/a — condition not activated`.
 
 ---
 
@@ -98,19 +98,19 @@ A task is a unit that needs **its own framing and its own independent check**. R
 
 `sealed` (both) → `reveal` (lead) → Luka answers, if asked → `continue` (lead: activated elements, then the deliverable) → `review` → `apply` (lead) → `confirm` → `apply` … → close.
 
-A child task with `Sealed: ne` skips `sealed` and `reveal`: it starts with `continue`, which does their bookkeeping. It returns to `sealed` as soon as new evidence reopens the framing, an alternative appears, or a Deep trigger fires.
+A child task with `Sealed: no` skips `sealed` and `reveal`: it starts with `continue`, which does their bookkeeping. It returns to `sealed` as soon as new evidence reopens the framing, an alternative appears, or a Deep trigger fires.
 
 - **Intake** in `task.md`: structured or a raw braindump, unchanged for both models. Unknown → `unknown`. Never invent Luka's value choices. Each load-bearing input: `verified locally · verified externally · user assertion · referenced but unavailable · unknown`.
 - **Framing diff:** the lead, once. **Compute every shared assumption that can be quantified.**
 - **The author never closes its own verification.**
-- **Keep current, at every stop:** the card, `Next step:` in `task.md`, and the task's row in `<state>/TASKS.md` (status, `čeka Luku od`). If you hit a usage limit, the other model resumes from them.
+- **Keep current, at every stop:** the card, `Next step:` in `task.md`, and the task's row in `<state>/TASKS.md` (status, `waiting on human since`). If you hit a usage limit, the other model resumes from them.
 - **Close** (in `apply.md`): decision records if needed · `outcome.md` · experiment registry row if the task is eligible · `ORIENTATION.md` delta if the system map changed · `TASKS.md` → `closed`.
 
 ---
 
-## The "Za Luku" card
+## The "For the human" card
 
-At the top of `task.md`. **The lead is its only writer.** Questions copied verbatim with `[Claude]` / `[GPT]` tags; remove only true duplicates. Fields: `Stanje · Od poslednjeg puta · Pitanja (doslovno) · Odluke · Posle tvog odgovora · Sledeća kapija`. When nothing is needed: `Nema akcije za Luku`.
+At the top of `task.md`. **The lead is its only writer.** Questions copied verbatim with `[Claude]` / `[GPT]` tags; remove only true duplicates. Fields: `State · Since the last update · Questions (verbatim) · Decisions · After your reply · Next gate`. When nothing is needed: `No human action needed`.
 
 ---
 
@@ -118,9 +118,9 @@ At the top of `task.md`. **The lead is its only writer.** Questions copied verba
 
 - **One focus by default**; a second when orthogonal and materially risky. Security / data-integrity focus gets its own call in Deep. Per finding: **finding · severity · evidence or reproduction · proposed action.**
 - **Software:** continue while valid **blocker, high or medium** findings exist. Medium = real impact on acceptance, maintainability, performance, security or reliability — never style.
-- **Research/decision:** a finding blocks only if it changes the recommendation, the ranking, a key condition, the next hard-to-reverse action, or would be expensive later. Otherwise → `Deferred` with `Nalaz · Zašto sada ne blokira · Revisit trigger`.
-- **Scope:** every review round has `Opseg: faza N` or `Opseg: završni` under `## Review`. A clean phase review accepts that phase and returns to `continue`; **only a clean `završni` review closes the task.** Rounds and round decisions count within the scope.
-- **From round 3**, when another round is needed and no decision for that round is recorded, the lead writes a convergence report and stops. **Luka decides** with `krug N: nastavi | promeni pristup | stani` — `stani` accepts the risk for the current scope only; `krug N: stani ceo task` ends the whole task. The decision holds only for that round and scope. A clean round needs no stop: it accepts the phase, or closes the task if the scope is `završni`.
+- **Research/decision:** a finding blocks only if it changes the recommendation, the ranking, a key condition, the next hard-to-reverse action, or would be expensive later. Otherwise → `Deferred` with `Finding · Why it does not block now · Revisit trigger`.
+- **Scope:** every review round has `Scope: phase N` or `Scope: final` under `## Review`. A clean phase review accepts that phase and returns to `continue`; **only a clean `final` review closes the task.** Rounds and round decisions count within the scope.
+- **From round 3**, when another round is needed and no decision for that round is recorded, the lead writes a convergence report and stops. **Luka decides** with `round N: continue | change approach | stop and accept risk` — `stop and accept risk` accepts the risk for the current scope only; `round N: stop whole task` ends the whole task. The decision holds only for that round and scope. A clean round needs no stop: it accepts the phase, or closes the task if the scope is `final`.
 
 ---
 
@@ -140,11 +140,11 @@ At the top of `task.md`. **The lead is its only writer.** Questions copied verba
 Decision records only for externally constrained, cross-cutting or hard-to-reverse decisions, in `<state>/decisions.md`:
 
 ```markdown
-**Odluka:** · **Zašto:** · **Alternative i zašto ne:**
-**Osnov:** A | H | 1–5, with the source
-**Nedokazano:** · **Confidence:** low | med | high · **Reverzibilnost:** trivijalna | skupa | jednosmerna
+**Decision:** · **Why:** · **Alternatives and why not:**
+**Basis:** A | H | 1–5, with the source
+**Unproven:** · **Confidence:** low | med | high · **Reversibility:** trivial | costly | one-way
 ```
 
-Task files, in the task folder: `task.md` (card, intake, elements, plan, checkpoints, review, deferred, relayed input) · `claude-pass.md` / `gpt-pass.md` · `luka.md` · `outcome.md`. Project: `<state>/TASKS.md`, `<state>/decisions.md`, and `ORIENTATION.md` in the repo once architecture exists.
+Task files, in the task folder: `task.md` (card, intake, elements, plan, checkpoints, review, deferred, relayed input) · `claude-pass.md` / `gpt-pass.md` · `human-input.md` · `outcome.md`. Project: `<state>/TASKS.md`, `<state>/decisions.md`, and `ORIENTATION.md` in the repo once architecture exists.
 
 **Non-software tasks:** build → produce the deliverable · test → independent check of claims and success criteria · adversarial test → counter-example or contrary evidence · rollout → executing the decision.

@@ -56,7 +56,7 @@ def install(root, repo, project, dry_run=False):
                 if parent.exists() and not parent.is_dir():
                     raise ValueError('Expected a directory at: ' + str(parent))
             content = entry.read_text(encoding='utf-8')
-            content = content.replace('<projekat>', project).replace('<workflow-root>', root.as_posix())
+            content = content.replace('<project>', project).replace('<workflow-root>', root.as_posix())
             plan.append((target, content))
     print('Workflow root: ' + str(root))
     print('Project state: ' + str(state))

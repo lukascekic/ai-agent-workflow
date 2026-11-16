@@ -29,7 +29,7 @@ After review, approve the graph you can see before allowing child tasks to start
 ## An ordinary task
 
 Copy `projects/<project>/tasks/_TEMPLATE/` to `tasks/03-<name>/` in the same
-project state directory. Write your request in `luka.md`, and put the task id,
+project state directory. Write your request in `human-input.md`, and put the task id,
 lead, reviewer and touched areas in `task.md`. The agents may prepare an empty
 folder when asked, but should not invent your intake.
 
@@ -46,7 +46,7 @@ folder when asked, but should not invent your intake.
 | `confirm 03` | reviewer, when needed | Check fixes and nearby regression risks |
 
 These are dispatched by you, not automatically. At every stop, read
-`Sledeća kapija:` in the card at the top of `task.md`; it names the exact next
+`Next gate:` in the card at the top of `task.md`; it names the exact next
 command and agent. Do not run every optional stage just because it exists.
 If a short command is not recognized, send the explicit pointer:
 
@@ -54,37 +54,25 @@ If a short command is not recognized, send the explicit pointer:
 Read .workflow/prompts/sealed.md and execute it for task 03.
 ```
 
-A child task explicitly approved with `Sealed: ne` starts with `continue`.
+A child task explicitly approved with `Sealed: no` starts with `continue`.
 A small local task meeting all Direct criteria starts with `DIRECT <request>`
 and skips task folders and the second model.
 
 ## Human decisions and stopping
 
-Answer in `luka.md` or directly to the lead, which quotes your answer under
+Answer in `human-input.md` or directly to the lead, which quotes your answer under
 `Relayed human input` in `task.md`. The agent never authors your input file.
 Review scope is either a phase or the final deliverable. A clean phase review
 accepts that phase only. From round three onward, if another round is needed,
 the lead asks you to continue, change approach or accept the remaining risk.
 Only an explicit whole-task stop ends the task early.
 
+Reply with `round N: continue`, `round N: change approach`, or
+`round N: stop and accept risk`, using the current round number. Accepting risk
+applies to the current review scope only. To end the entire task, reply with
+`round N: stop whole task`.
+
 Do not edit the same state file concurrently. Resolve sync conflicts explicitly.
 Avoid letting agents work in parallel on overlapping touched areas.
-
-## Glossary of retained fields
-
-| Original | Meaning |
-|---|---|
-| Za Luku | Human status and decision card |
-| Stanje | Current state |
-| Pitanja / Odluke | Questions / decisions |
-| Sledeća kapija | Exact next gate and recipient |
-| Oznaka | Fast or Deep risk label |
-| Dira | Files or areas touched |
-| Aktivirani elementi / Gotovo | Activated elements / completed |
-| Sealed: da / ne | Initial separate analysis required / waived by approved graph |
-| Opseg: faza N / završni | Review scope: phase N / final |
-| Review krug | Review round |
-| Odobrenje grafa | Human approval of the task graph |
-| Nema akcije za Luku | No human action needed |
 
 Use the full specification for conditions and exceptions.

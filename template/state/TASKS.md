@@ -1,7 +1,7 @@
-# Tasks — <projekat>
+# Tasks: <project>
 
 Source of truth for task status. Update it together with the task card at every stop.
 No portfolio generator or relay is included in this repository.
 
-| id | naziv | tip | status | oznaka | čeka na | dira | čeka Luku od |
+| id | name | type | status | label | waits on | touches | waiting on human since |
 |---|---|---|---|---|---|---|---|

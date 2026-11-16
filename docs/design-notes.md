@@ -40,7 +40,7 @@ sync conflicts must be handled explicitly.
 
 ## Protect the distinction between human input and agent interpretation
 
-`luka.md` is reserved for human input. An agent relaying a reply quotes it in
+`human-input.md` is reserved for human input. An agent relaying a reply quotes it in
 `task.md` instead of rewriting the human's file. The task card also records the
 exact next command, so a stopped session can be resumed without reconstructing
 the whole conversation.

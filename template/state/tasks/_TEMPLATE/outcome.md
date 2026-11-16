@@ -1,16 +1,16 @@
-# Outcome — <id>
+# Outcome: <id>
 
-*Popunjava lead pri zatvaranju. Od Luke se ništa ne traži.*
+*The lead fills this at closure. No extra input is requested from the human.*
 
 ```
-Oznaka i okidači koji su okinuli:
-Elementi izvršeni:
-Elementi n/a:
-Start / kraj:
-Pozivi modela i broj review krugova:
-Lukine intervencije (broj):
-Ko je prvi našao svaki blocker/high (faza):
-False positive-i:
-Review izazvao prepravku → confirmation našao regresiju? (da/ne):
-Escaped defect posle zatvaranja: (upisuje se kasnije, ako se pojavi)
+Label and triggers fired:
+Elements run:
+Elements n/a:
+Start / end:
+Model calls and review rounds:
+Human interventions (count):
+First finder of each blocker/high (phase):
+False positives:
+Review rewrite → confirmation found a regression? (yes/no):
+Escaped defect after closure: (fill later if one appears)
 ```

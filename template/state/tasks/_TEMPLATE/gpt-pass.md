@@ -1,3 +1,3 @@
-# GPT — <id>
+# GPT: <id>
 
-Sealed pass, framing diff (ako je GPT lead), argumentacija i review krugovi.
+Sealed pass, framing diff (if GPT is the lead), arguments and review rounds.

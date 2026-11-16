@@ -3,7 +3,7 @@
 **Illustrative example, written for this repository.** This is not a transcript,
 an implemented feature, or evidence of a successful workflow run. It shows the
 kind of information the task files and review loop are meant to hold. In actual
-use the task files retain the Serbian field names shown in the templates.
+use the task files follow the English fields shown in the templates.
 
 ## Request
 

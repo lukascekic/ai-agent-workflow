@@ -24,9 +24,9 @@ Every change is provisional until the next review and must state its expected su
 
 **Location rule:** a project's workflow state — task folders, `TASKS.md`, `decisions.md`, `research/` — lives in **`<state>` = `<workflow root>/projects/<project>/`**, outside the repo and outside every git branch. The repo carries only `.workflow/bootstrap.md`, `.workflow/config.md` (which names the project and the workflow root per machine) and `.workflow/prompts/`. Every worktree, both models, the relay and Luka therefore read and write the same state; Syncthing keeps the workflow root in sync between the Mac, the laptop and Luka's phone (D47, V5a).
 
-**Language rule:** instructions to models are in English (this document, the bootstrap, the stage prompts). Rationale and deliberation — `decisions.md`, task files, pass files — are in Serbian. **Conversation with Luka is in Serbian.** Code and code comments are in English.
+**Language rule:** use English for instructions, conversation, rationale, task files, pass files, decision records, code and code comments.
 
-**Authorship rule:** `luka.md` contains only Luka's own words. It is written by Luka, or by a mechanical relay that appends his message byte-for-byte with a message id, time and source. **No model writes in `luka.md`.** A model that needs to carry Luka's answer forward quotes it verbatim under `Relayed human input` in `task.md` (§5.2).
+**Authorship rule:** `human-input.md` contains only Luka's own words. It is written by Luka, or by a mechanical relay that appends his message byte-for-byte with a message id, time and source. **No model writes in `human-input.md`.** A model that needs to carry Luka's answer forward quotes it verbatim under `Relayed human input` in `task.md` (§5.2).
 
 ---
 
@@ -53,9 +53,9 @@ For an isolated project that is really one small task, opening Claude Code or Co
 
 When a project is new and either has more than one task or starts from a braindump, the first task is **`00-init`**. Luka does not have to ask for a decomposition.
 
-**Entry.** `init` is the only gate without a number; it means task `00`. Luka sends it to **one** model, which becomes the initializer and lead unless he names another. The initializer creates `00-init` from the template; if the braindump came in chat, copies it verbatim into `task.md` under `Braindump` marked as relayed (never into `luka.md`); sets lead, reviewer and status; adds the row to `TASKS.md`; and tells Luka to send `sealed 00` to both models. From there it is a normal task.
+**Entry.** `init` is the only gate without a number; it means task `00`. Luka sends it to **one** model, which becomes the initializer and lead unless he names another. The initializer creates `00-init` from the template; if the braindump came in chat, copies it verbatim into `task.md` under `Braindump` marked as relayed (never into `human-input.md`); sets lead, reviewer and status; adds the row to `TASKS.md`; and tells Luka to send `sealed 00` to both models. From there it is a normal task.
 
-**Order of approvals.** Sealed and reveal settle the *framing* (Luka approves it if the lead stops). `continue 00` then builds the graph and creates the child folders with status `čeka odobrenje grafa`; review and confirmation follow as for any deliverable; **Luka approves the graph he can actually see**, and only then may child tasks start. When nothing blocking remains, `apply 00` stops for that approval instead of closing; on Luka's next `apply 00` the lead copies it verbatim into `Odobrenje grafa:`, switches the child tasks to `intake` and closes. Requested changes are made and go to confirmation.
+**Order of approvals.** Sealed and reveal settle the *framing* (Luka approves it if the lead stops). `continue 00` then builds the graph and creates the child folders with status `awaiting graph approval`; review and confirmation follow as for any deliverable; **Luka approves the graph he can actually see**, and only then may child tasks start. When nothing blocking remains, `apply 00` stops for that approval instead of closing; on Luka's next `apply 00` the lead copies it verbatim into `Graph approval:`, switches the child tasks to `intake` and closes. Requested changes are made and go to confirmation.
 
 The deliverable is executable, not a description:
 
@@ -64,11 +64,11 @@ The deliverable is executable, not a description:
 - **wave 0**: decisions that block everything else come first;
 - **task boundaries under §1.4**, with the criterion named for every boundary;
 - per task: goal, type, triggers expected, acceptance criterion, oracle, `Touches:`, phases if any;
-- per child task, **`Sealed: da` or `Sealed: ne — <reason>`** under §1.5, and `Graf:` pointing to `00-init`;
+- per child task, **`Sealed: yes` or `Sealed: no — <reason>`** under §1.5, and `Graph:` pointing to `00-init`;
 - which tasks may run in parallel — two tasks whose `Touches:` overlap are serialized;
 - **the task folders actually created** in `<state>/tasks/`, each with its intake filled in, and the project index `TASKS.md`.
 
-The sealed pass of `00` is mandatory (framing is open by definition). Luka approves the graph — including every `Sealed: ne` — before tasks start. A re-plan is the same kind of task.
+The sealed pass of `00` is mandatory (framing is open by definition). Luka approves the graph — including every `Sealed: no` — before tasks start. A re-plan is the same kind of task.
 
 ### 1.3. Intake
 
@@ -95,15 +95,15 @@ A task is a unit that needs **its own framing and its own independent check**. B
 3. **parallel work** — parts should run at the same time and their `Touches:` do not overlap;
 4. **different oracle or user** — parts are checked in materially different ways, or used by different people.
 
-**Size alone is not a reason.** A large deliverable stays one task: one sealed pass and framing, a plan with phases, a checkpoint after each phase, and a review per phase when the reviewer cannot cover the whole in one call. A phase review checks that phase and its contracts with the phases already accepted; the final review (`Opseg: završni`, §4.3) covers the contracts between all phases and the final acceptance, and only it closes the task. Rollout and rollback gates stay with the risky action, inside the same task. `init` names the criterion for every boundary; a boundary without one is merged. A new blocking decision or risk that appears mid-task allows a later split.
+**Size alone is not a reason.** A large deliverable stays one task: one sealed pass and framing, a plan with phases, a checkpoint after each phase, and a review per phase when the reviewer cannot cover the whole in one call. A phase review checks that phase and its contracts with the phases already accepted; the final review (`Scope: final`, §4.3) covers the contracts between all phases and the final acceptance, and only it closes the task. Rollout and rollback gates stay with the risky action, inside the same task. `init` names the criterion for every boundary; a boundary without one is merged. A new blocking decision or risk that appears mid-task allows a later split.
 
 ### 1.5. Child task with inherited framing (D49)
 
 A child task from an approved graph may skip the sealed pass. This is an exception to the rule that the sealed pass always runs (D35), for child tasks only.
 
-- **Where it is decided:** in the graph. The lead writes `Sealed: da` or `Sealed: ne — <reason>` per child in `continue 00`; the reviewer checks it in `review 00`; Luka approves it with the graph. No extra gate.
-- **`ne` only when all hold:** the framing is closed in `00` (goal, approach and acceptance criterion written down) · no Deep trigger · no open alternatives where independent views would help.
-- **Entry:** the first gate is `continue <id>` to the lead. The lead checks that `Graf:` points to an approved graph — it cannot grant the exception itself — and does the bookkeeping `reveal` would have done: triggers, label, activated elements, status, card. **For software, the plan and an independent challenge stay activated**; review and confirmation rules apply as usual. No framing diff.
+- **Where it is decided:** in the graph. The lead writes `Sealed: yes` or `Sealed: no — <reason>` per child in `continue 00`; the reviewer checks it in `review 00`; Luka approves it with the graph. No extra gate.
+- **`no` only when all hold:** the framing is closed in `00` (goal, approach and acceptance criterion written down) · no Deep trigger · no open alternatives where independent views would help.
+- **Entry:** the first gate is `continue <id>` to the lead. The lead checks that `Graph:` points to an approved graph — it cannot grant the exception itself — and does the bookkeeping `reveal` would have done: triggers, label, activated elements, status, card. **For software, the plan and an independent challenge stay activated**; review and confirmation rules apply as usual. No framing diff.
 - **Back to sealed, at any point:** new evidence reopens the framing, an alternative appears, or a Deep trigger fires. Both models then get the same updated intake, and the lead does not continue under the exception until that is resolved.
 
 ---
@@ -155,7 +155,7 @@ Project-specific triggers live in `.workflow/config.md`.
 Each step names its gate (§5.3) and who receives it.
 
 1. **Intake** (§1.3) in `task.md`.
-2. **Sealed pass** — `sealed <id>` to both models, in parallel. Neither opens the other's pass file before writing its own and its sentinel. *(A child task with `Sealed: ne` skips steps 2–3 and starts at step 4 — §1.5.)*
+2. **Sealed pass** — `sealed <id>` to both models, in parallel. Neither opens the other's pass file before writing its own and its sentinel. *(A child task with `Sealed: no` skips steps 2–3 and starts at step 4 — §1.5.)*
 3. **Framing diff, effective label, activated elements, card** — `reveal <id>` to the lead (§3.4, §2.1). The lead stops for Luka when the task is Deep, or there is an open question, a value decision, or a load-bearing assumption about Luka's facts.
 4. **Activated elements and the deliverable** — `continue <id>` to the lead. Elements that need the other model are sent as their own gates (§3.2). *Software:* test-first where behavior can meaningfully be tested.
 5. **Independent review** — `review <id>` to the model that did not produce the deliverable (§4). **The author never closes its own verification.**
@@ -163,11 +163,11 @@ Each step names its gate (§5.3) and who receives it.
 7. **Confirmation** — `confirm <id>` to the reviewer if the rewrite was material or a blocking finding was contested (§4.3); then `apply <id>` again.
 8. **Close**, done by the lead inside `apply` when nothing blocking remains: decision records if §9.1 fires · `outcome.md` · experiment registry row if the task is eligible for an open experiment, or a ready-to-paste row in `outcome.md` · `ORIENTATION.md` delta if the system map changed · `TASKS.md` → `closed`.
 
-**Every time the lead stops for Luka, the card's `Sledeća kapija:` names the exact command and model** — Luka never has to remember the sequence.
+**Every time the lead stops for Luka, the card's `Next gate:` names the exact command and model** — Luka never has to remember the sequence.
 
 ### 3.2. Deep — selected elements, in order
 
-Deep is not a package. Only the elements activated by fired triggers and events run; **an element whose condition is not met is not done** and is recorded as `n/a — uslov nije aktiviran`.
+Deep is not a package. Only the elements activated by fired triggers and events run; **an element whose condition is not met is not done** and is recorded as `n/a — condition not activated`.
 
 | Order | Element | Runs when | Gate |
 |---|---|---|---|
@@ -259,9 +259,9 @@ recommendation: continue · change approach · stop and accept the risk
 
 **Luka decides.** If the same root-cause class returns without new evidence, the answer is a different approach or Luka's decision — not another identical round.
 
-The decision is **tied to its round and scope**: the lead stops only when round N ends with another round needed and no decision for round N of the current scope is recorded (`Odluka za krug N (<opseg>):` in `task.md`). Luka answers naming the round (`krug N: nastavi | promeni pristup | stani`); on the next `apply` the lead copies the answer verbatim into that field for the current scope before branching, and follows it. A decision for an earlier round, or from an earlier phase, never carries over. **`stani` accepts the risk for the current scope only**: in a phase it records the risk, marks the phase `prihvaćena uz rizik` and returns to `continue`; in `završni` it closes the task. Ending the whole task with phases still undelivered takes an explicit `krug N: stani ceo task`, and the undelivered phases are recorded. For `00` such a stop is not a graph approval: `00` closes as stopped without asking for one, and its child tasks become `otkazan — init prekinut`, never `intake`. A round that ends with nothing blocking needs no stop, whatever its number: it accepts the phase, or closes the task if the scope is `završni`.
+The decision is **tied to its round and scope**: the lead stops only when round N ends with another round needed and no decision for round N of the current scope is recorded (`Decision for round N (<scope>):` in `task.md`). Luka answers naming the round (`round N: continue | change approach | stop and accept risk`); on the next `apply` the lead copies the answer verbatim into that field for the current scope before branching, and follows it. A decision for an earlier round, or from an earlier phase, never carries over. **`stop and accept risk` accepts the risk for the current scope only**: in a phase it records the risk, marks the phase `accepted with risk` and returns to `continue`; in `final` it closes the task. Ending the whole task with phases still undelivered takes an explicit `round N: stop whole task`, and the undelivered phases are recorded. For `00` such a stop is not a graph approval: `00` closes as stopped without asking for one, and its child tasks become `cancelled: init stopped`, never `intake`. A round that ends with nothing blocking needs no stop, whatever its number: it accepts the phase, or closes the task if the scope is `final`.
 
-**Review scope.** Every review round has a scope under `## Review`: `Opseg: faza N` for one phase of a task with phases (§1.4), or `Opseg: završni` for the whole deliverable, the contracts between phases and the final acceptance. A phase review does not count later phases as findings. A clean phase review accepts that phase (`Faza N: prihvaćena`) and returns the task to `continue` for the next phase; **only a clean `završni` review closes the task.** Rounds, the convergence report and Luka's round decisions count within the current scope; a new scope starts at round 1. A task without phases has only `završni`.
+**Review scope.** Every review round has a scope under `## Review`: `Scope: phase N` for one phase of a task with phases (§1.4), or `Scope: final` for the whole deliverable, the contracts between phases and the final acceptance. A phase review does not count later phases as findings. A clean phase review accepts that phase (`Phase N: accepted`) and returns the task to `continue` for the next phase; **only a clean `final` review closes the task.** Rounds, the convergence report and Luka's round decisions count within the current scope; a new scope starts at round 1. A task without phases has only `final`.
 
 **Pre-implementation findings** — from `challenge`, `falsify` or a recommendation round — are processed by the lead in `continue`, and blocker, high and valid medium findings are resolved before implementation starts. They never close the task; only `apply` after a review or confirmation does.
 
@@ -286,32 +286,32 @@ The falsifier/pre-mortem is activated by the risk triggers in §2.2, and by the 
 
 ---
 
-## 5. Human interface (Luka in the original templates)
+## 5. Human interface
 
-### 5.1. The "Za Luku" card
+### 5.1. The "For the human" card
 
 At the **top of `task.md`**. The **lead is its only writer**; the other model adds questions to the lead's list through its own pass file.
 
 ```
-## Za Luku — <date, time>
-Stanje: <one sentence: where we are>
-Od poslednjeg puta: <1–3 lines>
-Pitanja (doslovno):
+## For the human — <date, time>
+State: <one sentence: where we are>
+Since the last update: <1–3 lines>
+Questions (verbatim):
   1. [Claude] ...
   2. [GPT] ...
-Odluke: <options · recommendation · what depends on it>
-Posle tvog odgovora: <what happens next and who does it>
-Sledeća kapija: <exact command → model, e.g. `continue 03 → Claude`>
+Decisions: <options · recommendation · what depends on it>
+After your reply: <what happens next and who does it>
+Next gate: <exact command → model, e.g. `continue 03 → Claude`>
 ```
 
 - Questions are copied **verbatim** and tagged with their source. The lead may remove a true duplicate, never merge two different nuances into its own paraphrase.
-- When no input is needed: **`Nema akcije za Luku`**, so old questions do not look active.
+- When no input is needed: **`No human action needed`**, so old questions do not look active.
 - The card is a way back into context. It does not replace the detailed pass and decision files.
 
 ### 5.2. Luka's answers
 
-- Luka writes directly in `luka.md` — on the laptop or the phone; Syncthing carries it to the Mac — or a mechanical relay appends his message there byte-for-byte.
-- He may also answer the lead in its terminal or through Orca mobile; during implementation that is the usual channel. The lead copies the answer **verbatim** into `task.md` under `Relayed human input`, with time and channel, and sends the same text to the other model. It never writes it into `luka.md`.
+- Luka writes directly in `human-input.md` — on the laptop or the phone; Syncthing carries it to the Mac — or a mechanical relay appends his message there byte-for-byte.
+- He may also answer the lead in its terminal or through Orca mobile; during implementation that is the usual channel. The lead copies the answer **verbatim** into `task.md` under `Relayed human input`, with time and channel, and sends the same text to the other model. It never writes it into `human-input.md`.
 - **Sync safety:** a `*.sync-conflict-*` file in the task folder stops the lead — it asks Luka which version holds and never picks one itself. If the card asks Luka something and the lead does not see his answer to *that* question, it stops and says so; it never acts on an older answer to a similar question.
 
 ### 5.3. Stage gates
@@ -329,7 +329,7 @@ Gates are **one short command naming the task by its numeric prefix**, unique wi
 | `review 03` · `confirm 03` | the model that did not produce the deliverable | review round · narrow confirmation |
 | `apply 03` | lead | applies or contests findings; closes when nothing blocks; also the return after Luka's round decision or graph approval |
 
-Each command loads a **frozen prompt** from `.workflow/prompts/<stage>.md`. Each stage ends with a sentinel line (`SEALED_READY 03`, `REVIEW_READY 03 krug 2`, …). A sentinel means the pass is done — not that anything is closed or approved. The review round number is kept under `## Review` in `task.md` and read from there. The same file is the single source of truth for Luka and for a lead that launches the other model — the lead sends only the one-line pointer, never its own text.
+Each command loads a **frozen prompt** from `.workflow/prompts/<stage>.md`. Each stage ends with a sentinel line (`SEALED_READY 03`, `REVIEW_READY 03 round 2`, …). A sentinel means the pass is done — not that anything is closed or approved. The review round number is kept under `## Review` in `task.md` and read from there. The same file is the single source of truth for Luka and for a lead that launches the other model — the lead sends only the one-line pointer, never its own text.
 
 Luka types the short command into the agent's terminal; the workflow block in `CLAUDE.md` / `AGENTS.md` points to the bootstrap, which maps the command to its prompt. If an agent does not recognize the short command, the pointer line works everywhere:
 
@@ -428,12 +428,12 @@ Luka does not write predictions before checkpoints. (Removed in v0.3: in the pil
 Only for externally constrained, cross-cutting or hard-to-reverse decisions.
 
 ```markdown
-**Odluka:** · **Zašto:** · **Alternative i zašto ne:**
-**Osnov:** A | H | 1–5, with the source
-**Nedokazano:** · **Confidence:** low | med | high · **Reverzibilnost:** trivijalna | skupa | jednosmerna
+**Decision:** · **Why:** · **Alternatives and why not:**
+**Basis:** A | H | 1–5, with the source
+**Unproven:** · **Confidence:** low | med | high · **Reversibility:** trivial | costly | one-way
 ```
 
-Deep adds `Failure detection`, `Revisit trigger`, `Cena greške`.
+Deep adds `Failure detection`, `Revisit trigger`, `Cost of error`.
 
 ### 9.2. Where things live
 
@@ -441,7 +441,7 @@ Deep adds `Failure detection`, `Revisit trigger`, `Cena greške`.
 |---|---|
 | Card, intake, plan, checkpoints, deferred findings, relayed input, `Next step:` | `<state>/tasks/<id>/task.md` |
 | Sealed pass, framing diff, argument, review rounds | `<state>/tasks/<id>/claude-pass.md` · `gpt-pass.md` |
-| Luka's own words | `<state>/tasks/<id>/luka.md` |
+| Luka's own words | `<state>/tasks/<id>/human-input.md` |
 | Task outcome | `<state>/tasks/<id>/outcome.md` |
 | Project task index | `<state>/TASKS.md` |
 | Project decisions | `<state>/decisions.md` |

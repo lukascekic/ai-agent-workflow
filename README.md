@@ -54,8 +54,8 @@ through their own tool settings. Check the generated `.workflow/config.md`, then
 follow the [usage guide](template/START_HERE.md) for preflight and stage commands.
 Run the workflow in the target project, not in this checkout.
 
-The task templates keep Serbian field names and `luka.md`, my human input file.
-The prompts refer to those exact names. The usage guide includes a glossary.
+The templates, prompts and workflow records use English. `human-input.md` is
+reserved for human input; agents quote replies in `task.md` instead.
 
 ## Tests
 

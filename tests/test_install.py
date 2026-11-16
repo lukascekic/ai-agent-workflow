@@ -31,11 +31,15 @@ class InstallTests(unittest.TestCase):
     def test_config_paths_and_hidden_files(self):
         self.run_install()
         config = (self.repo / '.workflow/config.md').read_text(encoding='utf-8')
-        self.assertIn('Projekat: demo', config)
+        self.assertIn('Project: demo', config)
         self.assertIn(self.root.as_posix(), config)
         self.assertNotIn('<workflow-root>', config)
         self.assertTrue((self.repo / '.workflow/prompts/sealed.md').is_file())
         self.assertTrue((self.root / 'projects/demo/tasks/_TEMPLATE/task.md').is_file())
+        self.assertTrue((self.root / 'projects/demo/tasks/_TEMPLATE/human-input.md').is_file())
+        self.assertFalse((self.root / 'projects/demo/tasks/_TEMPLATE/luka.md').exists())
+        self.assertIn('demo', (self.root / 'projects/demo/TASKS.md').read_text(encoding='utf-8'))
+        self.assertNotIn('<project>', config)
         self.assertFalse((self.repo / '.workflow/tasks').exists())
 
     def test_existing_instructions_config_and_state_are_unchanged(self):
@@ -43,10 +47,10 @@ class InstallTests(unittest.TestCase):
         files = [self.repo / 'AGENTS.md', self.repo / '.workflow/config.md',
                  self.root / 'projects/demo/TASKS.md']
         for file in files:
-            file.write_text('preserve this <projekat>', encoding='utf-8')
+            file.write_text('preserve this <project>', encoding='utf-8')
         self.assertEqual(self.run_install(), 0)
         for file in files:
-            self.assertEqual(file.read_text(encoding='utf-8'), 'preserve this <projekat>')
+            self.assertEqual(file.read_text(encoding='utf-8'), 'preserve this <project>')
 
     def test_invalid_names(self):
         for project in ('..', '.hidden', '../escape', 'a/b', 'a\\b', 'a b', 'CON', 'demo.'):
